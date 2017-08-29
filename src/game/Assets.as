@@ -12,6 +12,8 @@ package game
 	{
 		[Embed(source="../../media/graphics/bgWelcome.jpg")]
 		public static const BgWelcome:Class;
+		[Embed(source="../../media/graphics/bgLayer1.jpg")]
+		public static const BgLayer1:Class;
 	
 		private static var gameTexture:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;

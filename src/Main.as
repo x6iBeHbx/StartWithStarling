@@ -10,7 +10,7 @@ package
 	 * ...
 	 * @author Andrii Andriushchenko
 	 */
-	[SWF(width="720", height="640", frameRate="60", backgroundColor="#808080")]
+	[SWF(frameRate="60", width="1024", height="768", backgroundColor="0x000000")]
 	public class Main extends Sprite 
 	{
 		private var _starling:Starling;

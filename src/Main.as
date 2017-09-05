@@ -3,7 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import game.Game;
-	import game.InGame;
+	import game.InGames;
 	import starling.core.Starling;
 	
 	/**

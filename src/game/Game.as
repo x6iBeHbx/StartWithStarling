@@ -13,7 +13,7 @@ package game
 	public class Game extends Sprite
 	{
 		private var welcomeScreen:Welcome;
-		private var inGameScreen:InGame;
+		private var inGameScreen:InGames;
 		
 		public function Game()
 		{
@@ -37,7 +37,7 @@ package game
 			{
 				case "play": 
 					
-					inGameScreen = new InGame();
+					inGameScreen = new InGames();
 					this.addChild(inGameScreen);
 					
 					this.removeChild(welcomeScreen);

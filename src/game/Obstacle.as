@@ -29,11 +29,11 @@ package game
 			super();
 			
 			_type = type;
-			_distance = _distance;
-			_watchOut = watchOut;
-			_speed = speed;
+			_distance = distace;
+			this.watchOut = watchOut;
+			this.speed = speed;
 			
-			_alreadyHit = false;
+			this.alreadyHit = false;
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
@@ -57,7 +57,7 @@ package game
 				watchOutAnimation.y = obstacleAnimation.y + (obstacleAnimation.height * 0.5) - (watchOutAnimation.height * 0.5);
 			}else{
 				watchOutAnimation.x = -watchOutAnimation.width;
-				watchOutAnimation.y = obstacleImage.y + (obstacleAnimation.height * 0.5) - (watchOutAnimation.height * 0.5);
+				watchOutAnimation.y = obstacleImage.y + (obstacleImage.height * 0.5) - (watchOutAnimation.height * 0.5);
 			}
 			this.addChild(watchOutAnimation);
 		}
@@ -74,21 +74,16 @@ package game
 			//TODO: fucking KASTIL
 			if (_type == 4){
 				obstacleAnimation = new MovieClip(Assets.getAtlas().getTextures("obstacle" + _type + "_0"), 10);
+				this.addChild(obstacleAnimation);
 				Starling.juggler.add(obstacleAnimation);
 				obstacleAnimation.x = 0;
 				obstacleAnimation.y = 0;
-				this.addChild(obstacleAnimation);
 			}else {
 				obstacleImage = new Image(Assets.getAtlas().getTexture("obstacle" + _type));
 				obstacleImage.x = 0;
 				obstacleImage.y = 0;
 				this.addChild(obstacleImage);
 			}
-			
-			obstacleImage = new Image(Assets.getAtlas().getTexture("obstacle" + _type));
-			obstacleImage.x = 0;
-			obstacleImage.y = 0;
-			this.addChild(obstacleImage);
 		}
 		
 		public function get watchOut():Boolean 

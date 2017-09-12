@@ -5,6 +5,9 @@ package game
 	import starling.display.Button;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.utils.deg2rad;
 	
 	/**
 	 * ...
@@ -29,6 +32,10 @@ package game
 		private var obstacleGapCount:int;
 		
 		private var gameArea:Rectangle;
+		
+		private var touch:Touch;
+		private var touchX:Number;
+		private var touchY:Number;
 		
 		private var obstacleToAnimate:Vector.<Obstacle>;
 		
@@ -98,7 +105,16 @@ package game
 		private function launchHero():void
 		{
 			
+			this.addEventListener(TouchEvent.TOUCH, onTouch);
 			this.addEventListener(Event.ENTER_FRAME, onGameTick);
+		}
+		
+		private function onTouch(e:TouchEvent):void 
+		{
+			touch = e.getTouch(stage);
+			
+			touchX = touch.globalX;
+			touchY = touch.globalY;
 		}
 		
 		private function onGameTick(e:Event):void
@@ -118,6 +134,29 @@ package game
 				}
 				break;
 			case "flying":
+				
+				if (hitObstacle <= 0){
+					
+					hero.y -= (hero.y - touchY) * 0.1;
+					
+					if(-(hero.y - touchY) < 150 && -(hero.y - touchY) > -150){
+						hero.rotation = deg2rad(-(hero.y - touchY) * 0.2);
+					}
+					
+					if (hero.y > gameArea.bottom - hero.height * 0.5){
+						hero.y = gameArea.bottom - hero.height * 0.5;
+						hero.rotation = deg2rad(0);
+					}
+					
+					if (hero.y < gameArea.top + hero.height * 0.5){
+						hero.y = gameArea.top + hero.height * 0.5
+						hero.rotation = deg2rad(0);
+					}
+				}else{
+					hitObstacle--;
+					cameraShake();
+				}
+				
 				playerSpeed -= (playerSpeed - MIN_SPEED) * 0.01;
 				bg.speed = playerSpeed * elapsed;
 				
@@ -131,12 +170,32 @@ package game
 			}
 		}
 		
+		private function cameraShake():void 
+		{
+			if (hitObstacle > 0){
+				this.x = Math.random() * hitObstacle;
+				this.y = Math.random() * hitObstacle;
+				
+			}else if (x != 0){
+				this.x = 0;
+				this.y = 0;
+			}
+		}
+		
 		private function animateObstacle():void 
 		{
 			var obstacleToTrack:Obstacle;
 			
 			for (var i:uint = 0; i < obstacleToAnimate.length; i++ ){
 				obstacleToTrack = obstacleToAnimate[i];
+				
+				if (obstacleToTrack.alreadyHit == false && obstacleToTrack.bounds.intersects(hero.bounds)){
+					
+					obstacleToTrack.alreadyHit = true;
+					obstacleToTrack.rotation = deg2rad(70);
+					hitObstacle = 30;
+					playerSpeed *= 0.5;
+				}
 				
 				if (obstacleToTrack.distance > 0){
 					obstacleToTrack.distance -= playerSpeed * elapsed;
